@@ -1,0 +1,63 @@
+# project: cjim1pnng2z0l01549zakgz82
+# version: 2
+
+type AnalyticEntry @model {
+  id: ID! @isUnique
+  payload: Json!
+  type: ActionType!
+  appVersion: String!
+  devMode: Boolean
+  deviceDetails: Json
+  sessionId: String
+  createdAt: DateTime!
+}
+
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type MoodEntry @model {
+  anger: Float!
+  createdAt: DateTime!
+  disgust: Float!
+  fear: Float!
+  id: ID! @isUnique
+  inRelativeMode: Boolean
+  joy: Float!
+  sadness: Float!
+  surprise: Float!
+  user: User @relation(name: "MoodEntryOnUser")
+  withRelativeValue: Boolean
+}
+
+type User @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  isVerified: Boolean! @defaultValue(value: false)
+  moodEntries: [MoodEntry!]! @relation(name: "MoodEntryOnUser")
+  secret: String @isUnique
+  updatedAt: DateTime!
+  comments: String
+  group: Int! @defaultValue(value: 0)
+}
+
+enum ActionType {
+  ENTER_SCREEN
+  OPEN_APPLICATION
+  SUBMIT_ENTRY
+  VIEW_GRAPH
+  CHANGE_SETTINGS
+}
+
+enum EntryProps {
+  ABSOLUTE
+  RELATIVE_ENABLED_RELATIVE
+  RELATIVE_ENABLED_ABSOLUTE
+}
